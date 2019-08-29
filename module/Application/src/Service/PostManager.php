@@ -38,7 +38,9 @@ class PostManager
         $post->setContent($data['content']);
         $post->setStatus($data['status']);
         $currentDate = new \DateTime();
-        $post->setDateCreated($currentDate);        
+        $post->setDateCreated($currentDate);
+
+        $post->setBlog($this->entityManager->find(\Application\Entity\Blog::class, $data['blog_id']));
         
         // Add the entity to entity manager.
         $this->entityManager->persist($post);
@@ -59,6 +61,8 @@ class PostManager
         $post->setContent($data['content']);
         $post->setStatus($data['status']);
         
+        $post->setBlog($this->entityManager->find(\Application\Entity\Blog::class, $data['blog_id']));
+
         // Add tags to post
         $this->addTagsToPost($data['tags'], $post);
         

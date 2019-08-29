@@ -12,13 +12,20 @@ use Application\Entity\Post;
 class PostForm extends Form
 {
     /**
+     * @var \Application\Repository\BlogRepository
+     */
+    private $blogRepository;
+    
+    /**
      * Constructor.     
      */
-    public function __construct()
+    public function __construct($blogRepository)
     {
         // Define form name
         parent::__construct('post-form');
      
+        $this->blogRepository = $blogRepository;
+
         // Set POST method for this form
         $this->setAttribute('method', 'post');
                 
@@ -82,6 +89,25 @@ class PostForm extends Form
                     Post::STATUS_PUBLISHED => 'Published',
                     Post::STATUS_DRAFT => 'Draft',
                 ]
+            ],
+        ]);
+        
+        $blogs = $this->blogRepository->findAll();
+        $blogIdValues = [];
+        foreach ($blogs as $blog) {
+            $blogIdValues[$blog->getId()] = $blog->getTitle();
+        }
+
+        // Add "blog" field
+        $this->add([
+            'type'  => 'select',
+            'name' => 'blog_id',
+            'attributes' => [                
+                'id' => 'blog_id'
+            ],
+            'options' => [
+                'label' => 'Blog',
+                'value_options' => $blogIdValues
             ],
         ]);
         

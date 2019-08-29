@@ -5,6 +5,7 @@ use Interop\Container\ContainerInterface;
 use Zend\ServiceManager\Factory\FactoryInterface;
 use Application\Service\PostManager;
 use Application\Controller\PostController;
+use Application\Entity\Blog;
 
 /**
  * This is the factory for PostController. Its purpose is to instantiate the
@@ -16,9 +17,12 @@ class PostControllerFactory implements FactoryInterface
     {
         $entityManager = $container->get('doctrine.entitymanager.orm_default');
         $postManager = $container->get(PostManager::class);
+
+        $blogRepository = $entityManager->getRepository(Blog::class);
+        $postForm = new \Application\Form\PostForm($blogRepository);
         
         // Instantiate the controller and inject dependencies
-        return new PostController($entityManager, $postManager);
+        return new PostController($entityManager, $postManager, $postForm);
     }
 }
 

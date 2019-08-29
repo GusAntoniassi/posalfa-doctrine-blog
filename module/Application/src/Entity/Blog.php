@@ -24,6 +24,11 @@ class Blog
     protected $title;
 
     /**
+     * @ORM\OneToMany(targetEntity="Application\Entity\Post", mappedBy="blog")
+     */
+    protected $posts;
+
+    /**
      * Returns ID of this post.
      * @return integer
      */
@@ -57,5 +62,25 @@ class Blog
     public function setTitle($title) 
     {
         $this->title = $title;
+    }
+
+    /**
+     * Get the value of posts
+     */ 
+    public function getPosts()
+    {
+        return $this->posts;
+    }
+
+    /**
+     * Set the value of posts
+     *
+     * @return  self
+     */ 
+    public function setPosts($posts)
+    {
+        $this->posts = $posts;
+
+        return $this;
     }
 }

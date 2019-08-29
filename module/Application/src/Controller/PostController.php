@@ -25,14 +25,20 @@ class PostController extends AbstractActionController
      * @var \Application\Service\PostManager
      */
     private $postManager;
+
+    /**
+     * @var \Application\Form\PostForm
+     */
+    private $postForm;
     
     /**
      * Constructor is used for injecting dependencies into the controller.
      */
-    public function __construct($entityManager, $postManager) 
+    public function __construct($entityManager, $postManager, $postForm) 
     {
         $this->entityManager = $entityManager;
         $this->postManager = $postManager;
+        $this->postForm = $postForm;
     }
     
     /**
@@ -43,7 +49,7 @@ class PostController extends AbstractActionController
     public function addAction() 
     {     
         // Create the form.
-        $form = new PostForm();
+        $form = $this->postForm;
         
         // Check whether this post is a POST request.
         if ($this->getRequest()->isPost()) {
@@ -137,7 +143,7 @@ class PostController extends AbstractActionController
     public function editAction() 
     {
         // Create form.
-        $form = new PostForm();
+        $form = $this->postForm;
         
         // Get post ID.
         $postId = (int)$this->params()->fromRoute('id', -1);
@@ -180,7 +186,8 @@ class PostController extends AbstractActionController
                 'title' => $post->getTitle(),
                 'content' => $post->getContent(),
                 'tags' => $this->postManager->convertTagsToString($post),
-                'status' => $post->getStatus()
+                'status' => $post->getStatus(),
+                'blog_id' => $post->getBlog()->getId(),
             ];
             
             $form->setData($data);

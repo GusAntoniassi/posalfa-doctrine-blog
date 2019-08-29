@@ -23,7 +23,7 @@ class PostRepository extends EntityRepository
         } else {
             $query = $this->findPosts();
         }
-        
+
         //$query->andWhere($query->expr()->eq('p.status', ':status'));
         //$query->setParameter(':status', Post::STATUS_PUBLISHED, \Doctrine\DBAL\Types\Type::INTEGER);
 

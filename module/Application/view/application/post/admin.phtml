@@ -23,6 +23,7 @@ $this->pageBreadcrumbs()->setItems([
         <th>ID</th>
         <th>Post Title</th>
         <th>Date Created</th>
+        <th>Blog</th>        
         <th>Status</th>        
         <th>Actions</th>        
     </tr>
@@ -37,6 +38,11 @@ $this->pageBreadcrumbs()->setItems([
             </a> 
         </td>
         <td><?= $this->escapeHtml($post->getDateCreated()->format('d/m/Y H:i')); ?></td>
+        <td>
+            <a href="<?= $this->url('blogs', ['action'=>'view', 'id'=>$post->getBlog()->getId()]); ?>">
+                <?= $this->escapeHtml($post->getBlog()->getTitle()); ?>
+            </a> 
+        </td>
         <td><?= $this->escapeHtml($postManager->getPostStatusAsString($post)); ?></td>
         <td>
             <a class="btn btn-info" href="<?= $this->url('posts', 

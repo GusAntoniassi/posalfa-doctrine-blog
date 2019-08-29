@@ -74,7 +74,7 @@ return [
                         'action'     => 'about',
                     ],
                 ],
-            ],                                    
+            ],
         ],
     ],
     'controllers' => [
