@@ -18,7 +18,11 @@ $this->pageBreadcrumbs()->setItems([
     <?php foreach($postsOrderCreated as $post): /* @var $post Application\Entity\Post */ ?>
 
     <h3>
-        <a href="<?= $this->url('posts', ['action'=>'view', 'id'=>$post->getId()]); ?>">
+        <a href="<?= $this->url('view_post', [
+            'action'=>'view', 
+            'id'=>$post->getId(),
+            'blog_id' => $post->getBlog()->getId()
+        ]); ?>">
             <?= $this->escapeHtml($post->getTitleWithBlog()); ?>
         </a>    
     </h3>
@@ -30,7 +34,11 @@ $this->pageBreadcrumbs()->setItems([
         
     <p class="comments-header">
         <?= $this->escapeHtml($postManager->getCommentCountStr($post)); ?> | 
-        <a href="<?= $this->url('posts', ['action'=>'view', 'id'=>$post->getId()],
+        <a href="<?= $this->url('view_post', [
+            'action' => 'view', 
+            'id' => $post->getId(),
+            'blog_id' => $post->getBlog()->getId()
+        ],
                 ['fragment'=>'comment']); ?>">
             Add new comment
         </a>
@@ -55,7 +63,11 @@ $this->pageBreadcrumbs()->setItems([
         <?php foreach($postsOrderViews as $post): /* @var $post Application\Entity\Post */ ?>
 
             <h3>
-                <a href="<?= $this->url('posts', ['action'=>'view', 'id'=>$post->getId()]); ?>">
+                <a href="<?= $this->url('view_post', [
+                    'action' => 'view', 
+                    'id' => $post->getId(),
+                    'blog_id' => $post->getBlog()->getId()
+                ]); ?>">
                     <?= $this->escapeHtml($post->getTitleWithBlog()); ?>
                 </a>
             </h3>
@@ -67,7 +79,10 @@ $this->pageBreadcrumbs()->setItems([
 
             <p class="comments-header">
                 <?= $this->escapeHtml($postManager->getCommentCountStr($post)); ?> |
-                <a href="<?= $this->url('posts', ['action'=>'view', 'id'=>$post->getId()],
+                <a href="<?= $this->url('view_post', [
+                    'action' => 'view', 
+                    'id' => $post->getId(),
+                    'blog_id' => $post->getBlog()->getId()],
                     ['fragment'=>'comment']); ?>">
                     Add new comment
                 </a>

@@ -86,6 +86,7 @@ class PostController extends AbstractActionController
     public function viewAction() 
     {
         $postId = (int) $this->params()->fromRoute('id', -1);
+        $blogId = (int) $this->params()->fromRoute('blog_id', -1);
         
         // Validate input parameter
         if ($postId<0) {
@@ -98,7 +99,7 @@ class PostController extends AbstractActionController
         $repository = $this->entityManager->getRepository(Post::class);
         $post = $repository->findOneById($postId);
 
-        if (! $post instanceof Post) {
+        if (! $post instanceof Post || $post->getBlog()->getId() != $blogId) {
             $this->getResponse()->setStatusCode(404);
             return;                        
         }
@@ -125,7 +126,11 @@ class PostController extends AbstractActionController
                 $this->postManager->addCommentToPost($post, $data);
                 
                 // Redirect the user again to "view" page.
-                return $this->redirect()->toRoute('posts', ['action'=>'view', 'id'=>$postId]);
+                return $this->redirect()->toRoute('view_post', [
+                    'action' => 'view', 
+                    'id' => $postId, 
+                    'blog_id' => $post->getBlog()->getId()
+                ]);
             }
         }
         

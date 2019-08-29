@@ -51,6 +51,21 @@ return [
                     ],
                 ],
             ],
+            'view_post' => [
+                'type'    => Segment::class,
+                'options' => [
+                    'route'    => '/blog/:blog_id/posts/view/:id',
+                    'constraints' => [
+                        'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'id' => '[0-9]*',
+                        'blog_id' => '[0-9]*',
+                    ],
+                    'defaults' => [
+                        'controller'    => Controller\PostController::class,
+                        'action'        => 'view',
+                    ],
+                ],
+            ],
             'blogs' => [
                 'type'    => Segment::class,
                 'options' => [
