@@ -1,6 +1,7 @@
 <?php
 namespace Application\Controller;
 
+use Application\Repository\PostRepository;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 use Application\Form\PostForm;
@@ -21,7 +22,7 @@ class PostController extends AbstractActionController
     
     /**
      * Post manager.
-     * @var Application\Service\PostManager 
+     * @var \Application\Service\PostManager
      */
     private $postManager;
     
@@ -77,8 +78,8 @@ class PostController extends AbstractActionController
      * to add a comment to post. 
      */
     public function viewAction() 
-    {       
-        $postId = (int)$this->params()->fromRoute('id', -1);
+    {
+        $postId = (int) $this->params()->fromRoute('id', -1);
         
         // Validate input parameter
         if ($postId<0) {
@@ -87,13 +88,16 @@ class PostController extends AbstractActionController
         }
         
         // Find the post by ID
-        $post = $this->entityManager->getRepository(Post::class)
-                ->findOneById($postId);
-        
-        if ($post == null) {
+        /* @var $repository PostRepository */
+        $repository = $this->entityManager->getRepository(Post::class);
+        $post = $repository->findOneById($postId);
+
+        if (! $post instanceof Post) {
             $this->getResponse()->setStatusCode(404);
             return;                        
-        }        
+        }
+
+        $this->postManager->updateViews($post);
         
         // Create the form.
         $form = new CommentForm();

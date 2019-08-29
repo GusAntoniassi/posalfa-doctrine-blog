@@ -22,7 +22,6 @@ $this->pageBreadcrumbs()->setItems([
    <tr>
         <th>ID</th>
         <th>Post Title</th>
-        <th>Subtitle</th>
         <th>Date Created</th>
         <th>Status</th>        
         <th>Actions</th>        
@@ -37,7 +36,6 @@ $this->pageBreadcrumbs()->setItems([
                 <?= $this->escapeHtml($post->getTitle()); ?>
             </a> 
         </td>
-        <td><?= $this->escapeHtml($post->getSubtitle()); ?></td>
         <td><?= $this->escapeHtml($post->getDateCreated()->format('d/m/Y H:i')); ?></td>
         <td><?= $this->escapeHtml($postManager->getPostStatusAsString($post)); ?></td>
         <td>

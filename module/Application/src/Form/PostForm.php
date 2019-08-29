@@ -44,18 +44,6 @@ class PostForm extends Form
                 'label' => 'Title',
             ],
         ]);
-                
-        // Add "subtitle" field
-        $this->add([        
-            'type'  => 'text',
-            'name' => 'subtitle',
-            'attributes' => [
-                'id' => 'subtitle'
-            ],
-            'options' => [
-                'label' => 'subtitle',
-            ],
-        ]);
         
         // Add "content" field
         $this->add([
@@ -119,25 +107,6 @@ class PostForm extends Form
         
         $inputFilter->add([
                 'name'     => 'title',
-                'required' => true,
-                'filters'  => [
-                    ['name' => 'StringTrim'],
-                    ['name' => 'StripTags'],
-                    ['name' => 'StripNewlines'],
-                ],                
-                'validators' => [
-                    [
-                        'name'    => 'StringLength',
-                        'options' => [
-                            'min' => 1,
-                            'max' => 1024
-                        ],
-                    ],
-                ],
-            ]);
-        
-        $inputFilter->add([
-                'name'     => 'subtitle',
                 'required' => true,
                 'filters'  => [
                     ['name' => 'StringTrim'],

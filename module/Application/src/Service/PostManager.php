@@ -35,7 +35,6 @@ class PostManager
         // Create new Post entity.
         $post = new Post();
         $post->setTitle($data['title']);
-        $post->setSubtitle($data['subtitle']);
         $post->setContent($data['content']);
         $post->setStatus($data['status']);
         $currentDate = new \DateTime();
@@ -57,7 +56,6 @@ class PostManager
     public function updatePost($post, $data) 
     {
         $post->setTitle($data['title']);
-        $post->setSubtitle($data['subtitle']);
         $post->setContent($data['content']);
         $post->setStatus($data['status']);
         
@@ -148,7 +146,6 @@ class PostManager
             return $commentCount . ' comments';
     }
 
-
     /**
      * This method adds a new comment to post.
      */
@@ -225,7 +222,15 @@ class PostManager
         
         return $normalizedTagCloud;
     }
+
+    /**
+     * @param Post $post
+     */
+    public function updateViews(Post $post)
+    {
+        $newCount = $post->getViews() + 1;
+        $post->setViews($newCount);
+        $this->entityManager->persist($post);
+        $this->entityManager->flush();
+    }
 }
-
-
-

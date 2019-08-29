@@ -1,6 +1,7 @@
 <?php
 namespace Application\Controller;
 
+use Application\Repository\PostRepository;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 use DoctrineORMModule\Paginator\Adapter\DoctrinePaginator as DoctrineAdapter;
@@ -18,13 +19,13 @@ class IndexController extends AbstractActionController
 {
     /**
      * Entity manager.
-     * @var Doctrine\ORM\EntityManager 
+     * @var \Doctrine\ORM\EntityManager
      */
     private $entityManager;
     
     /**
      * Post manager.
-     * @var Application\Service\PostManager 
+     * @var \Application\Service\PostManager
      */
     private $postManager;
     
@@ -43,32 +44,25 @@ class IndexController extends AbstractActionController
      */
     public function indexAction() 
     {
+        $tagCloud = $this->postManager->getTagCloud();
+
         $page = $this->params()->fromQuery('page', 1);
         $tagFilter = $this->params()->fromQuery('tag', null);
-        
-        if ($tagFilter) {
-         
-            // Filter posts by tag
-            $query = $this->entityManager->getRepository(Post::class)
-                    ->findPostsByTag($tagFilter);
-            
-        } else {
-            // Get recent posts
-            $query = $this->entityManager->getRepository(Post::class)
-                    ->findPublishedPosts();
-        }
-        
-        $adapter = new DoctrineAdapter(new ORMPaginator($query, false));
-        $paginator = new Paginator($adapter);
-        $paginator->setDefaultItemCountPerPage(10);        
-        $paginator->setCurrentPageNumber($page);
-                       
-        // Get popular tags.
-        $tagCloud = $this->postManager->getTagCloud();
-        
+
+        /* @var $repository PostRepository */
+        $repository = $this->entityManager->getRepository(Post::class);
+        $repository->page = $page;
+        $repository->tagFilter = $tagFilter;
+
+        $paginator1 = $repository->findPostsSite();
+
+        $repository->defaultOrder = ['views', 'DESC'];
+        $paginator2 = $repository->findPostsSite();
+
         // Render the view template.
         return new ViewModel([
-            'posts' => $paginator,
+            'postsOrderCreated' => $paginator1,
+            'postsOrderViews' => $paginator2,
             'postManager' => $this->postManager,
             'tagCloud' => $tagCloud
         ]);

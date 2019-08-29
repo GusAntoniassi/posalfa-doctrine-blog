@@ -27,12 +27,8 @@ $form->prepare();
 </a>
 
 <h1>
-    <?= $this->escapeHtml($post->getTitle()); ?>    
+    <?= $this->escapeHtml($post->getTitleWithBlog()); ?>
 </h1>
-
-<h5 style="color: #666;">
-    <?= $this->escapeHtml($post->getSubtitle()); ?>    
-</h5>
 
 <p class="comments-header">
     <?= $this->escapeHtml($postManager->getCommentCountStr($post)); ?> | 

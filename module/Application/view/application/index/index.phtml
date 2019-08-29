@@ -12,13 +12,13 @@ $this->pageBreadcrumbs()->setItems([
 
 <div class="row">
     
-    <div class="col-md-8">
+    <div class="col-md-4">
 
-    <?php foreach($posts as $post): ?>
+    <?php foreach($postsOrderCreated as $post): /* @var $post Application\Entity\Post */ ?>
 
     <h3>
         <a href="<?= $this->url('posts', ['action'=>'view', 'id'=>$post->getId()]); ?>">
-            <?= $this->escapeHtml($post->getTitle()); ?>
+            <?= $this->escapeHtml($post->getTitleWithBlog()); ?>
         </a>    
     </h3>
     
@@ -41,13 +41,50 @@ $this->pageBreadcrumbs()->setItems([
 
     <?php endforeach; ?>
 
-    <?= $this->paginationControl($posts,
+    <?= $this->paginationControl($postsOrderCreated,
                     'Sliding',
                     'application/partial/paginator', 
                     array('route' => 'application')); ?>
     
     </div>
-    
+
+    <div class="col-md-4">
+
+        <?php foreach($postsOrderViews as $post): /* @var $post Application\Entity\Post */ ?>
+
+            <h3>
+                <a href="<?= $this->url('posts', ['action'=>'view', 'id'=>$post->getId()]); ?>">
+                    <?= $this->escapeHtml($post->getTitleWithBlog()); ?>
+                </a>
+            </h3>
+
+            <p>
+                Published: <?= $this->escapeHtml($post->getDateCreated()->format('d/m/Y H:i')); ?>
+                | Tags: <?= $this->escapeHtml($postManager->convertTagsToString($post)); ?>
+            </p>
+
+            <p class="comments-header">
+                <?= $this->escapeHtml($postManager->getCommentCountStr($post)); ?> |
+                <a href="<?= $this->url('posts', ['action'=>'view', 'id'=>$post->getId()],
+                    ['fragment'=>'comment']); ?>">
+                    Add new comment
+                </a>
+            </p>
+
+            <p>
+                <?= $this->escapeHtml($post->getContent()); ?>
+            </p>
+
+        <?php endforeach; ?>
+
+        <?= $this->paginationControl($postsOrderViews,
+            'Sliding',
+            'application/partial/paginator',
+            array('route' => 'application')); ?>
+
+    </div>
+
+
     <div class="col-md-4">
         <div class="panel panel-default">
             <div class="panel-heading">

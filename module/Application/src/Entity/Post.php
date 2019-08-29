@@ -28,9 +28,25 @@ class Post
     protected $title;
 
     /**
-     * @ORM\Column(name="subtitle", type="string", length=255, nullable=false)
+     * @ORM\Column(name="subtitle", type="string", length=255, nullable=true)
      */
     protected $subtitle;
+
+    /**
+     * @return mixed
+     */
+    public function getSubtitle()
+    {
+        return $this->subtitle;
+    }
+
+    /**
+     * @param mixed $subtitle
+     */
+    public function setSubtitle($subtitle)
+    {
+        $this->subtitle = $subtitle;
+    }
 
     /** 
      * @ORM\Column(name="content", type="text")
@@ -61,12 +77,33 @@ class Post
      *      )
      */
     protected $tags;
-    
+
     /**
-     * @ORM\ManyToOne(targetEntity="\Application\Entity\Author", inversedBy="posts")
-     * @ORM\JoinColumn(name="author_id", referencedColumnName="id")
+     * @ORM\ManyToOne(targetEntity="Application\Entity\Blog")
+     * @ORM\JoinColumn(name="blog_id", referencedColumnName="id", nullable=false)
      */
-    protected $author;
+    protected $blog;
+
+    /**
+     * @return mixed
+     */
+    public function getViews()
+    {
+        return $this->views;
+    }
+
+    /**
+     * @param mixed $views
+     */
+    public function setViews($views)
+    {
+        $this->views = $views;
+    }
+
+    /**
+     * @ORM\Column(name="views", type="integer", options={"default" : 0})
+     */
+    protected $views = 0;
 
     /**
      * Constructor.
@@ -102,6 +139,16 @@ class Post
     public function getTitle() 
     {
         return $this->title;
+    }
+
+    public function getTitleWithBlog()
+    {
+        $tmpl = '%s - %s';
+        return sprintf(
+            $tmpl,
+            $this->getBlog()->getTitle(),
+            $this->getTitle()
+        );
     }
 
     /**
@@ -212,23 +259,18 @@ class Post
     }
 
     /**
-     * Get the value of subtitle
-     */ 
-    public function getSubtitle()
+     * @return Blog
+     */
+    public function getBlog()
     {
-        return $this->subtitle;
+        return $this->blog;
     }
 
     /**
-     * Set the value of subtitle
-     *
-     * @return  self
-     */ 
-    public function setSubtitle($subtitle)
+     * @param $blog Blog
+     */
+    public function setBlog($blog)
     {
-        $this->subtitle = $subtitle;
-
-        return $this;
+        $this->blog = $blog;
     }
 }
-
