@@ -43,8 +43,13 @@
                             'link' => $this->url('home')
                         ],
                         [
-                            'id' => 'admin',
-                            'label' => 'Admin',
+                            'id' => 'admin-blogs',
+                            'label' => 'Manage Blogs',
+                            'link' => $this->url('blogs', ['action'=>'admin'])
+                        ],
+                        [
+                            'id' => 'admin-posts',
+                            'label' => 'Manage Posts',
                             'link' => $this->url('posts', ['action'=>'admin'])
                         ],
                         [

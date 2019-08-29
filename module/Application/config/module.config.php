@@ -51,6 +51,20 @@ return [
                     ],
                 ],
             ],
+            'blogs' => [
+                'type'    => Segment::class,
+                'options' => [
+                    'route'    => '/blogs[/:action[/:id]]',
+                    'constraints' => [
+                        'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'id' => '[0-9]*'
+                    ],
+                    'defaults' => [
+                        'controller'    => Controller\BlogController::class,
+                        'action'        => 'index',
+                    ],
+                ],
+            ],
             'about' => [
                 'type' => Literal::class,
                 'options' => [
@@ -67,11 +81,13 @@ return [
         'factories' => [
             Controller\IndexController::class => Controller\Factory\IndexControllerFactory::class,
             Controller\PostController::class => Controller\Factory\PostControllerFactory::class,
+            Controller\BlogController::class => Controller\Factory\BlogControllerFactory::class,
         ],
     ],
     'service_manager' => [
         'factories' => [
             Service\PostManager::class => Service\Factory\PostManagerFactory::class,
+            Service\BlogManager::class => Service\Factory\BlogManagerFactory::class,
         ],
     ],
     // The following registers our custom view 
